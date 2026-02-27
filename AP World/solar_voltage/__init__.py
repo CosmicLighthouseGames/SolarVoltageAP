@@ -62,6 +62,9 @@ class SolarVoltageWorld(World):
 
         for item_key, item_value in item_list.items():
             # override the item values for counts that come from options
+            if item_key == "PowerCell":
+                item_value = (item_value[0], self.options.gem_max.value)
+
 
             for count in range(item_value[1]):
                 item = self.create_item(item_key)
@@ -77,9 +80,8 @@ class SolarVoltageWorld(World):
 
     def set_rules(self) -> None:
         
-        
         self.multiworld.completion_condition[self.player] = lambda state: \
-            state.has("MainGem", self.player, self.options.gem_required.value)
+            state.has("PowerCell", self.player, self.options.gem_required.value)
 
 
     def fill_slot_data(self) -> Dict[str, Any]:

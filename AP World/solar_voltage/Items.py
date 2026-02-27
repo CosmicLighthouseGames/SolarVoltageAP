@@ -6,7 +6,36 @@ class SolarVoltageItem(Item):
 
 
 base_items = {
-    "MainGem": (ItemClassification.progression, 52),
+    "PowerCell": (ItemClassification.progression, 100),
+}
+
+world_items = {
+    "Snowball": (ItemClassification.progression, 1),
+    "Screws": (ItemClassification.progression, 1),
+    "Launchers": (ItemClassification.progression, 1),
+    "IceBerries": (ItemClassification.progression, 1),
+    "Pipes": (ItemClassification.progression, 1),
+    "ConveyorBelts": (ItemClassification.progression, 1),
+    "Fans": (ItemClassification.progression, 1),
+    "HoverPlatform": (ItemClassification.progression, 1),
+    "CrystalPedestals": (ItemClassification.progression, 1),
+    "Slingshots": (ItemClassification.progression, 2), # Slingshots, then rotater
+    "GlowCrystal": (ItemClassification.progression, 1),
+    "CrystalLamps": (ItemClassification.progression, 1),
+    "LightFlowers": (ItemClassification.progression, 1),
+}
+ability_items = {
+    "Roll": (ItemClassification.progression, 2), # Roll, then roll jump
+    "Hover": (ItemClassification.progression, 1),
+    "GroundPound": (ItemClassification.progression, 1),
+    "Spin": (ItemClassification.progression, 1),
+    "AirDive": (ItemClassification.progression, 1),
+    "GrabbingItems": (ItemClassification.progression, 1),
+}
+ability_speedrun_items = {
+    "WallJump": (ItemClassification.progression, 1),
+    "SuperHover": (ItemClassification.progression, 1),
+    "RollCancel": (ItemClassification.progression, 1),
 }
 
 filler_items = {
@@ -25,5 +54,4 @@ item_dict = {
 }
 
 item_alias_list = {
-    "MainGem": {"PowerCell"},
 }

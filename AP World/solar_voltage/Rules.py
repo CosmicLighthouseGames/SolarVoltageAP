@@ -4,7 +4,7 @@ from .RulesData import location_rules
 from .RulesData import connection_rules
 from .Items import SolarVoltageItem, item_dict
 from .Locations import SolarVoltageLocation, tagged_locations_dict
-from .Options import SolarVoltageOptions
+from .Options import SolarVoltageOptions, RandomizeAbilities, RandomizeMechanics
 from BaseClasses import CollectionState, Location, Entrance, ItemClassification, Region
 from ..AutoWorld import World
 from ..generic.Rules import add_rule, set_rule
@@ -13,6 +13,7 @@ from ..generic.Rules import add_rule, set_rule
 def apply_location_rules(world: World):
     # for each region in location rules, and for each location
     # create a location and call process_access_point
+
     for region_name, locations in location_rules.items():
         region = world.get_region(region_name)
         valid_location_ids: dict[str, int | None] = get_location_ids(world, list(locations.keys()))
@@ -38,6 +39,14 @@ def get_location_ids(world: World, locations: list[str]) -> dict[str, int | None
 def apply_connection_rules(world: World):
     # for each region in connection rules, and for each connecting region, 
     # create an entrance and call process_access_point
+
+    options: SolarVoltageOptions = cast(SolarVoltageOptions, world.options)
+    
+    location_rules["vanilla/newhub/center"]["vanilla/newhub/tutorial2"] .add({ "casual": [[("PowerCell", options.tutorial_unlock.value)]] })
+    location_rules["vanilla/newhub/center"]["vanilla/snow0"]            .add({ "casual": [[("PowerCell", options.snow_unlock.value)]] })
+    location_rules["vanilla/newhub/boiler"]["vanilla/desert0"]          .add({ "casual": [[("PowerCell", options.desert_unlock.value)]] })
+    location_rules["vanilla/newhub/computers"]["vanilla/desert0"]       .add({ "casual": [[("PowerCell", options.dark_unlock.value)]] })
+
     for region_name, connections in connection_rules.items():
         region = world.get_region(region_name)
         id = 1
@@ -75,12 +84,81 @@ def solarvoltage_has(world: World, state: CollectionState, item: str | tuple[str
     options: SolarVoltageOptions = cast(SolarVoltageOptions, world.options)
 
     if type(item) == str:
-        if item in item_dict.keys():
-            # handles normal abilities like Dash, Climb, Wind, etc.
-            return state.has(item, world.player)
-        
-        elif item == "Free":
+        if item == "Free":
             return True
+        
+        elif \
+            item == "Roll" or\
+            item == "Hover" or\
+            item == "GroundPound" or\
+            item == "Spin" or\
+            item == "AirDive" or\
+            item == "GrabbingItems":
+            if options.randomize_abilities.value == RandomizeAbilities.option_normal or options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                return state.has(item, world.player)
+            return True
+        
+        elif \
+            item == "WallJump" or\
+            item == "SuperHover" or\
+            item == "RollCancel":
+            if options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                return state.has(item, world.player)
+            return True
+        
+        elif item == "RollJump":
+            if options.randomize_abilities.value == RandomizeAbilities.option_normal or options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                return state.has("Roll", world.player, 2)
+            return True
+        
+        elif \
+            item == "Launchers" or\
+            item == "ConveyorBelts" or\
+            item == "Fans" or\
+            item == "HoverPlatform" or\
+            item == "Slingshots" or\
+            item == "CrystalLamps" or\
+            item == "LightFlowers":
+            if options.randomize_mechanics.value == RandomizeMechanics.option_normal:
+                return state.has(item, world.player)
+            return True
+        
+        elif item == "RotatingWorld":
+            if options.randomize_mechanics.value == RandomizeMechanics.option_normal:
+                return state.has("Slingshots", world.player, 2)
+            return True
+        
+        elif \
+            item == "IceBerries" or\
+            item == "CrystalPedestals" or\
+            item == "GlowCrystal":
+            if options.randomize_mechanics.value == RandomizeMechanics.option_normal:
+                if options.randomize_abilities.value == RandomizeAbilities.option_normal or options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                    return state.has(item, world.player) and state.has("GrabbingItems", world.player)
+                else:
+                    return state.has(item, world.player)
+            return True
+        
+        elif \
+            item == "Snowball" or\
+            item == "Screws":
+            if options.randomize_mechanics.value == RandomizeMechanics.option_normal:
+                if options.randomize_abilities.value == RandomizeAbilities.option_normal or options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                    return state.has(item, world.player) and state.has("Spin", world.player)
+                else:
+                    return state.has(item, world.player)
+            return True
+        
+        elif item == "Pipes":
+            if options.randomize_mechanics.value == RandomizeMechanics.option_normal:
+                if options.randomize_abilities.value == RandomizeAbilities.option_normal or options.randomize_abilities.value == RandomizeAbilities.option_advanced:
+                    return state.has(item, world.player) and state.has("GroundPound", world.player)
+                else:
+                    return state.has(item, world.player)
+            return True
+        
+        elif item in item_dict.keys():
+            return state.has(item, world.player)
         
         else:
             return False
