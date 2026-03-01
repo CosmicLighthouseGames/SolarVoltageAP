@@ -3,6 +3,14 @@ from dataclasses import dataclass
 from Options import Toggle, Choice, Range, PerGameCommonOptions
 
 
+class LogicDifficulty(Choice):
+    """Sets the difficulty of the logic"""
+    display_name = "Difficulty"
+    option_casual = 0
+    option_advanced = 1
+    option_expert = 2
+    default = 0
+
 class GemCount(Range):
     """The number of power cells required to beat the game"""
     display_name = "Power Cell Requirement"
@@ -67,6 +75,7 @@ class RandomizeAbilities(Choice):
 
 @dataclass
 class SolarVoltageOptions(PerGameCommonOptions):
+    logic_difficulty: LogicDifficulty
     gem_required: GemCount
     gem_max: GemMax
     tutorial_unlock: TutorialUnlock
@@ -77,6 +86,7 @@ class SolarVoltageOptions(PerGameCommonOptions):
     randomize_abilities: RandomizeAbilities
 
 slot_data_options: list[str] = [
+    "logic_difficulty",
     "gem_required",
     "gem_max",
     "tutorial_unlock",

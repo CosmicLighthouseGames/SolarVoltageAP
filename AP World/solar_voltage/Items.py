@@ -6,23 +6,24 @@ class SolarVoltageItem(Item):
 
 
 base_items = {
-    "PowerCell": (ItemClassification.progression, 100),
+    "Power Cell": (ItemClassification.progression, 100),
 }
 
 world_items = {
-    "Snowball": (ItemClassification.progression, 1),
+    "Snowballs": (ItemClassification.progression, 1),
     "Screws": (ItemClassification.progression, 1),
     "Launchers": (ItemClassification.progression, 1),
     "IceBerries": (ItemClassification.progression, 1),
     "Pipes": (ItemClassification.progression, 1),
     "ConveyorBelts": (ItemClassification.progression, 1),
     "Fans": (ItemClassification.progression, 1),
-    "HoverPlatform": (ItemClassification.progression, 1),
+    "HoverPlatforms": (ItemClassification.progression, 1),
     "CrystalPedestals": (ItemClassification.progression, 1),
     "Slingshots": (ItemClassification.progression, 2), # Slingshots, then rotater
-    "GlowCrystal": (ItemClassification.progression, 1),
+    "GlowCrystals": (ItemClassification.progression, 1),
     "CrystalLamps": (ItemClassification.progression, 1),
     "LightFlowers": (ItemClassification.progression, 1),
+    "Teleporters": (ItemClassification.progression, 1),
 }
 ability_items = {
     "Roll": (ItemClassification.progression, 2), # Roll, then roll jump
